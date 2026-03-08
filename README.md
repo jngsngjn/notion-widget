@@ -44,6 +44,7 @@ miny-widget/
 | `content` | 표시할 문구 | ❌ | `마무리 잘하기` |
 | `background` | 배경색 (HEX, # 제외) | ❌ | `FEC3FF` |
 | `text` | 글자색 (HEX, # 제외) | ❌ | `000000` |
+| `inclusive` | 시작일을 1일로 포함 여부 (`true`/`false`) | ❌ | `true` |
 
 전체 주소 예시:  
 `https://youngdev57.github.io/miny-widget/dday?content=시험끝🎓&date=20241128&background=FFD1D1&text=333`

@@ -41,6 +41,7 @@ const setDate = () => {
   }
 
   const date = params.get("date");
+  const inclusive = params.get("inclusive") === "true";
 
   if (!date || date.length !== 8) {
     console.error("Invalid Date: ", date);
@@ -58,7 +59,13 @@ const setDate = () => {
   let targetDate = new Date(year, month - 1, day);
   const diff = getDaysDifference(targetDate);
 
-  const prefix = diff > 0 ? "D+" : "D";
-  const dday = diff === 0 ? "TODAY" : prefix + diff;
+  let dday;
+  if (inclusive && diff >= 0) {
+    dday = diff + 1;
+  } else {
+    const prefix = diff > 0 ? "D+" : "D";
+    dday = diff === 0 ? "TODAY" : prefix + diff;
+  }
+
   rootElement.querySelector(".counter").textContent = dday;
 };
