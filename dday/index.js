@@ -32,10 +32,12 @@ const setContent = () => {
 
 const setDate = () => {
   function getDaysDifference(targetDate) {
-    let today = new Date();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
 
     const gap = today - targetDate;
-    const daysDiff = Math.floor(gap / (1000 * 60 * 60 * 24));
+    const daysDiff = Math.round(gap / (1000 * 60 * 60 * 24));
 
     return daysDiff;
   }
@@ -61,7 +63,7 @@ const setDate = () => {
 
   let dday;
   if (inclusive && diff >= 0) {
-    dday = diff + 1;
+    dday = `+${diff + 1}`;
   } else {
     const prefix = diff > 0 ? "D+" : "D";
     dday = diff === 0 ? "TODAY" : prefix + diff;
