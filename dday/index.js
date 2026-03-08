@@ -45,25 +45,51 @@ const setDate = () => {
   const date = params.get("date");
   const inclusive = params.get("inclusive") === "true";
 
-  if (!date || date.length !== 8) {
+  if (!date || date.length < 6 || date.length > 8) {
     console.error("Invalid Date: ", date);
     rootElement.querySelector(".date").textContent = "Invalid Date";
     rootElement.querySelector(".counter").textContent = "ERROR";
+    return;
   }
 
   const year = parseInt(date.slice(0, 4), 10);
-  const month = parseInt(date.slice(4, 6), 10);
-  const day = parseInt(date.slice(6), 10);
+  let month, day;
 
-  rootElement.querySelector(".date").textContent =
-    `${year}-${month}-${day}` ?? "";
+  if (date.length === 8) {
+    month = parseInt(date.slice(4, 6), 10);
+    day = parseInt(date.slice(6), 10);
+  } else if (date.length === 7) {
+    const m = parseInt(date.slice(4, 6), 10);
+    if (m >= 1 && m <= 12) {
+      month = m;
+      day = parseInt(date.slice(6), 10);
+    } else {
+      month = parseInt(date.slice(4, 5), 10);
+      day = parseInt(date.slice(5), 10);
+    }
+  } else {
+    month = parseInt(date.slice(4, 5), 10);
+    day = parseInt(date.slice(5), 10);
+  }
+
+  if (isNaN(year) || isNaN(month) || isNaN(day)) {
+    console.error("Invalid Date: ", date);
+    rootElement.querySelector(".date").textContent = "Invalid Date";
+    rootElement.querySelector(".counter").textContent = "ERROR";
+    return;
+  }
+
+  const displayMonth = String(month).padStart(2, "0");
+  const displayDay = String(day).padStart(2, "0");
+
+  rootElement.querySelector(".date").textContent = `${year}-${displayMonth}-${displayDay}`;
 
   let targetDate = new Date(year, month - 1, day);
   const diff = getDaysDifference(targetDate);
 
   let dday;
   if (inclusive && diff >= 0) {
-    dday = `+${diff + 1}`;
+    dday = `D+${diff + 1}`;
   } else {
     const prefix = diff > 0 ? "D+" : "D";
     dday = diff === 0 ? "TODAY" : prefix + diff;
